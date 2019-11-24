@@ -1,0 +1,125 @@
+
+<div th:fragment="ListarServicios" id="ListarServicios" >
+
+
+<div class="container-fluid mt-4" >
+
+<div class="row mt-3 justify-content-center">
+
+	<h3 style="color:#3E59F1;">HISTORIAL DE SERVICIOS MECANICOS</h3>
+
+</div>
+
+<div class="row mb-3">
+
+	<div class="col-12 ">
+		
+		<a th:href="@{/ServicioMecanico/Gestionar}"  class="btn btn-outline-primary mt-3">Nuevo Servicio</a>
+	
+	</div>
+
+</div>
+
+
+<div class="row justify-content-center">
+
+	<div class="col-12">
+	
+	<div class="table-responsive" style="height: 450px; border: 1px solid #3E59F1;">
+	
+	<table class="table table-hover table-sm">
+	
+		<thead class="text-center mt-5" style="background:#3E59F1;">
+		<th style="color: white;" hidden="hidden" scope="col">IDServicio</th>
+		<th style="color: white;" scope="col">Cliente (Nombre o Razon)</th>
+		<th style="color: white;" scope="col">Personal (Nombre)</th>
+		<th style="color: white;" scope="col">Fecha</th>
+		<th style="color: white;" scope="col">Opciones</th>
+		
+		</thead>
+		
+		<tbody>
+		 
+			<div th:each="servicioMecanico : ${listaServicioMecanico}">
+	                    
+                   <tr class="text-center" style="cursor: pointer;">
+                   
+                   	  <td class="numero" hidden="hidden" th:text=${servicioMecanico.serv_id}></td>
+                      <td th:text="${servicioMecanico.cli_id.apellidos}+' '+${servicioMecanico.cli_id.nombre}"></td>
+                      <td th:text="${servicioMecanico.per_id.apellidos}+' '+${servicioMecanico.per_id.nombre}"></td>
+                      <td th:text=${servicioMecanico.serv_fecha}></td>
+                      
+                      <td >
+                      <a sec:authorize="hasRole('ADMIN')" th:href="@{'Editar'+ ${servicioMecanico.serv_id}}" class="btn btn-warning mr-2"><i class="fas fa-pen"></i></a>
+                       <a sec:authorize="hasRole('USER')" th:href="@{'Informacion'+ ${servicioMecanico.serv_id}}" class="btn btn-info mr-2"><i class="fas fa-eye"></i></a>
+                      <a sec:authorize="hasRole('ADMIN')" href="#"  class="btn btn-danger borrar" ><i class="fas fa-trash-alt"></i> </a>
+                      </td>
+                    </tr>
+	                    
+             </div> 
+		
+		</tbody>
+	
+	</table>
+	
+	</div>
+	
+	
+	</div>
+
+</div>
+
+
+
+</div>
+
+<script type="text/javascript">
+
+$(document).on('click', '.borrar', function (event) {
+	
+	 var idServicioMecanico=0;
+    $(this).parents("tr").find(".numero").each(function() {
+    	idServicioMecanico = $(this).html();
+    });
+event.preventDefault();
+swal({
+	  title: "Mensaje de Confirmacion",
+	  text: "¿Desea remover este registro de la lista?",
+	  icon: "warning",
+	  buttons: true,
+	  dangerMode: true,
+	})
+	.then((willDelete) => {
+	  if (willDelete) {
+		  
+		  $.ajax({
+		        type: 'POST',
+		        url: "Eliminar",
+		        data:{
+		        	idServicioMecanico:idServicioMecanico},
+		        datatype: 'json',
+		        success: function (response) {
+		        	
+		        	  swal("El registro se ha removido correctamente!", {
+		           	      icon: "success",
+		           	   	  timer: 2000
+	    				}).then(	
+  						function () {
+  							  if (true) {
+  								 window.location="http://localhost:8080/ServicioMecanico/listar";
+  							  }
+  						})
+		        },
+	            error : function() {
+	                //alert("error");
+	            }
+		  });  
+	  } 
+	});
+
+ 
+
+});
+</script>
+
+</div>

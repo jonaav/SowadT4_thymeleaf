@@ -1,0 +1,226 @@
+
+<div th:fragment="InformacionServicioMecanico" id="InformacionServicioMecanico" sec:authorize="hasRole('USER')">
+
+
+<div class="container-fluid mt-4" >
+
+<div class="text-center">
+<h3 style="color:#3E59F1;">INFORMACION DE SERVICIO MECANICO</h3>
+</div>
+
+      <div class="row">
+
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <label for="">Fecha</label>
+                    <input readonly="readonly" th:value=${ServicioMecanico.serv_fecha} id="dtfechaServicioMecanico" type="date" class="form-control">
+    
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <input th:value=${ServicioMecanico.serv_id} hidden="hidden" type="text" class="form-control" id="txtIdServicio">
+ 			<input th:value=${ServicioMecanico.per_id.per_id} hidden="hidden" type="text" class="form-control" id="txtIdPersonal">
+  			<input th:value=${ServicioMecanico.cli_id.cli_id} hidden="hidden" type="text" class="form-control" id="txtIdCliente">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Personal a cargo: </label>
+                    <div class="input-group mb-3">
+                        <input th:value="${ServicioMecanico.per_id.apellidos}+' '+${ServicioMecanico.per_id.nombre}" id="txtNombreCompletoPersonal" readonly="readonly" type="text" class="form-control" placeholder="Nombres y Apellidos Personal" aria-label="Nombres y Apellidos Personal" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button disabled="disabled"  class="btn btn-outline-primary" data-toggle="modal" data-target=".modalBuscarPersonal-modal-lg" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+                  </div> 
+                
+            </div>
+
+            <div class="col-lg-6">
+                <div class="form-group">
+
+                    <label for="">Cliente: </label>
+                    <div class="input-group mb-3">
+                        <input th:value="${ServicioMecanico.cli_id.apellidos}+' '+${ServicioMecanico.cli_id.nombre}" id="txtNombreCompletoCliente" readonly="readonly" type="text" class="form-control" placeholder="Nombres y Apellidos Cliente" aria-label="Nombres y Apellidos Cliente" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button disabled="disabled"  class="btn btn-outline-primary" data-toggle="modal" data-target=".modalBuscarCliente-modal-lg" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+    
+                </div>
+                
+            </div>
+
+        </div>
+        
+        <div class="row mt-4">
+        
+	        <div class="col-12">
+	        
+		        <div class="table-responsive" style="height: 250px; border: 1px solid #3E59F1">
+			        <table class="table table-sm table-stripped" id="tblDetallesServicio" >
+			        
+			        <thead style="background: #3E59F1;">
+			        
+				        <tr class="text-center">
+					        <th hidden="hidden" style="color: white;" scope="col">ID Detalle</th>
+					        <th hidden="hidden" scope="col">ID Servicio</th>
+					        <th style="color: white;" scope="col">Servicio</th>
+					        <th style="color: white;" scope="col">Precio</th>
+					        <th style="color: white;" scope="col">Marca</th>
+					        <th style="color: white;" scope="col">Modelo</th>
+					        <th style="color: white;" scope="col">Placa</th>
+					        <th style="color: white;" scope="col">Contenido</th>
+					        <th style="color: white;" scope="col">Detalle</th>
+				        </tr>
+			        
+			        </thead>
+			        
+			        <tbody>
+			        
+			        <div th:each="detalleServicioMecanico : ${ServicioMecanico.detalleServicioMecanico}">
+			        
+			        <tr class="text-center" style="cursor: pointer;">
+			        	<td hidden="hidden" th:text=${detalleServicioMecanico.id}></td>
+			        	<td hidden="hidden" th:text=${detalleServicioMecanico.servicio.srv_id}></td>
+			        	<td th:text=${detalleServicioMecanico.servicio.nombre}></td>
+			        	<td th:text=${detalleServicioMecanico.servicio.monto}></td>
+			        	<td th:text=${detalleServicioMecanico.marca}></td>
+			        	<td th:text=${detalleServicioMecanico.modelo}></td>
+			        	<td th:text=${detalleServicioMecanico.placa}></td>
+			        	<td th:text=${detalleServicioMecanico.contenido}></td>
+		       	 		<td><button sec:authorize="hasRole('USER')" th:id="${detalleServicioMecanico.servicio.srv_id}" class="btn btn-info informacion"><i th:id="${detalleServicioMecanico.servicio.srv_id}" class="fas fa-eye"></i></button></td>
+			        </tr>
+			        
+			        </div>
+			        
+			        </tbody>
+			        
+			        </table>
+		        </div>
+	        
+	        
+        </div>
+        
+        </div>
+        
+
+</div>
+
+<!-- ModalInformacion Detalle-->
+
+<div class="modal fade" id="ModalInformacionDetalleServicio" tabindex="-1" role="dialog" aria-labelledby="ModalInformacionDetalleServicio" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #3E59F1; color:white;">
+        <h5 class="modal-title" id="exampleModalLabel">Registar Detalle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span style="color:white;" class="pr-2" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="container">
+        
+        <div class="row">
+        
+        <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="cmbServicios">Servicio</label>
+		    <select disabled="disabled"  name="cmbServicio" class="form-control" id="cmbServicios">
+		      <option   value="0">Seleccione una opcion</option>
+		      <option  th:each="servicio : ${listaServicios}" th:value="${servicio.srv_id}"  th:text="${servicio.nombre}" ></option>
+		      
+		    </select>
+		  </div>
+		  
+        </div>
+        
+         <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Marca</label>
+		    <input readonly="readonly" id="txtMarca" type="text" class="form-control" name="marca" placeholder="Ingresa una Marca">
+		  </div>
+		  
+        </div>
+        
+         <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Modelo</label>
+		    <input readonly="readonly" id="txtModelo" type="text" class="form-control" name="modelo" placeholder="Ingresa un modelo">
+		  </div>
+		  
+        </div>
+        
+          <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Placa</label>
+		    <input readonly="readonly" id="txtPlaca" type="text" class="form-control" name="placa" placeholder="Ingresa una placa">
+		  </div>
+		  
+        </div>
+        
+          <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlTextarea1">Contenido:</label>
+		    <textarea readonly="readonly" id="txtContenido" class="form-control" name="contenido" rows="3"></textarea>
+		  </div>
+		  </div>
+		  
+        
+        </div>
+        
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+
+
+$(document).on('click', '.informacion', function (event) {
+	
+	  var idServicio = event.target.id;
+	  var fila=0;
+	
+	$('#tblDetallesServicio tr').each(function () {
+		 
+		fila++;
+		if(fila>1)
+			{
+			if(idServicio==$(this).find("td").eq(1).html())
+				{
+				$('#cmbServicios').val($(this).find("td").eq(1).html());
+	   			$('#txtMarca').val($(this).find("td").eq(4).html());
+	   			$('#txtModelo').val($(this).find("td").eq(5).html());
+	   			$('#txtPlaca').val($(this).find("td").eq(6).html());
+	   			$('#txtContenido').val($(this).find("td").eq(7).html());
+				}
+				
+			}	
+		});
+	
+		$("#ModalInformacionDetalleServicio").modal("show");
+	});
+
+</script>
+
+
+</div>
+
+

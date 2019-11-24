@@ -1,0 +1,602 @@
+
+<div th:fragment="GestionarServicios" id="GestionarServicios">
+
+
+<div class="container-fluid mt-4" >
+
+<div class="text-center">
+<h3 style="color:#3E59F1;">REGISTRAR SERVICIO MECANICO</h3>
+</div>
+
+      <div class="row">
+
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <label for="">Fecha</label>
+                    <input id="dtfechaServicioMecanico" type="date" class="form-control">
+    
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+ 			<input hidden="hidden" type="text" class="form-control" id="txtIdPersonal">
+  			<input hidden="hidden" type="text" class="form-control" id="txtIdCliente">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Personal a cargo: </label>
+                    <div class="input-group mb-3">
+                        <input id="txtNombreCompletoPersonal" readonly="readonly" type="text" class="form-control" placeholder="Nombres y Apellidos Personal" aria-label="Nombres y Apellidos Personal" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button onclick="listarPersonal()" class="btn btn-outline-primary" data-toggle="modal" data-target=".modalBuscarPersonal-modal-lg" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+                  </div> 
+                
+            </div>
+
+            <div class="col-lg-6">
+                <div class="form-group">
+
+                    <label for="">Cliente: </label>
+                    <div class="input-group mb-3">
+                        <input id="txtNombreCompletoCliente" readonly="readonly" type="text" class="form-control" placeholder="Nombres y Apellidos Cliente" aria-label="Nombres y Apellidos Cliente" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                          <button onclick="listarClientes()" class="btn btn-outline-primary" data-toggle="modal" data-target=".modalBuscarCliente-modal-lg" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+                        </div>
+                      </div>
+    
+                </div>
+                
+            </div>
+
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label> Detalle de servicio</label>
+                    <button class="btn btn-outline-primary form-control" data-toggle="modal" data-target="#ModalRegistrarDetalleServicio" type="button" id="button-addon2">Agregar </button>
+                        
+                </div>
+                
+            </div>
+
+        </div>
+        
+        <div class="row">
+        
+	        <div class="col-12">
+	        
+		        <div class="table-responsive" style="height: 250px; border: 1px solid #3E59F1">
+			        <table class="table table-sm table-stripped" id="tblDetallesServicio" >
+			        
+			        <thead style="background: #3E59F1;">
+			        
+				        <tr class="text-center">
+					        <th hidden="hidden" style="color: white;" scope="col">ID Detalle</th>
+					        <th hidden="hidden" scope="col">ID Servicio</th>
+					        <th style="color: white;" scope="col">Servicio</th>
+					        <th style="color: white;" scope="col">Precio</th>
+					        <th style="color: white;" scope="col">Marca</th>
+					        <th style="color: white;" scope="col">Modelo</th>
+					        <th style="color: white;" scope="col">Placa</th>
+					        <th style="color: white;" scope="col">Contenido</th>
+					        <th style="color: white;" scope="col">Opciones</th>
+				        </tr>
+			        
+			        </thead>
+			        
+			        <tbody>
+			        
+			        
+			        </tbody>
+			        
+			        </table>
+		        </div>
+	        
+	        
+        </div>
+        
+        </div>
+        
+        <div class="row mt-3">
+        
+	        <div class="col-2">
+	        
+	        	<button class="btn btn-primary form-control" onclick="guardarServicioMecanico()">GUARDAR</button>
+	        
+	        </div>
+        
+        
+        </div>
+
+</div>
+
+<!-- Modal  Registrar Detalle-->
+
+<div class="modal fade" id="ModalRegistrarDetalleServicio" tabindex="-1" role="dialog" aria-labelledby="ModalRegistrarDetalleServicio" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #3E59F1; color:white;">
+        <h5 class="modal-title" id="exampleModalLabel">Registar Detalle</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span style="color:white;" class="pr-2" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="container">
+        
+        <div class="row">
+        
+        <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="cmbServicios">Servicio</label>
+		    <select name="cmbServicio" class="form-control" id="cmbServicios">
+		      <option   value="0">Seleccione una opcion</option>
+		      <option  th:each="servicio : ${listaServicios}" th:value="${servicio.srv_id}"  th:text="${servicio.nombre}" ></option>
+		      
+		    </select>
+		  </div>
+		  
+        </div>
+        
+         <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Marca</label>
+		    <input id="txtMarca" type="text" class="form-control" name="marca" placeholder="Ingresa una Marca">
+		  </div>
+		  
+        </div>
+        
+         <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Modelo</label>
+		    <input id="txtModelo" type="text" class="form-control" name="modelo" placeholder="Ingresa un modelo">
+		  </div>
+		  
+        </div>
+        
+          <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlSelect1">Placa</label>
+		    <input id="txtPlaca" type="text" class="form-control" name="placa" placeholder="Ingresa una placa">
+		  </div>
+		  
+        </div>
+        
+          <div class="col-12">
+        
+           <div class="form-group">
+		    <label for="exampleFormControlTextarea1">Contenido:</label>
+		    <textarea id="txtContenido" class="form-control" name="contenido" rows="3"></textarea>
+		  </div>
+		  </div>
+		  
+        
+        </div>
+        
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button onclick="agregarDetalleServicio()" type="button" class="btn btn-primary">Registrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <!-- Inicio Modal Buscar Personal -->
+
+
+<div class="modal fade modalBuscarPersonal-modal-lg" id="modalHistorialPersonal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" >
+
+            <div class="modal-header" style="background: #3E59F1; color:white;">
+
+                    <h5 class="modal-title" id="exampleModalLabel">Historial Personal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" style="color:white;">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div class="container">
+                    
+	          			 <div class="row">
+		                    
+		                    <div class="col-12">
+		                    
+		                     	<h6 ><i class="far fa-hand-pointer"></i> Haga Doble click para seleccionar un elemento</h6>
+		                     	
+		                    </div>
+	                   
+	                    </div> 
+                        <div class="row">
+                            
+                                <div class="table-responsive pl-2" style="height: 400px;">
+
+                                        <table   id="tblPersonal" class="table table-bordered table-hover mt-3">
+        
+                                                <thead style="background: #3E59F1; color:white;">
+                                                    <tr class="text-center">
+                                                        <th scope="col" style="text-justify:auto">ID</th>
+                                                        <th scope="col">Apellidos</th>
+                                                        <th scope="col">Nombres</th>
+                                                    </tr>
+                                                </thead>
+                    
+                                                <tbody>
+                                                    
+                    
+                                                </tbody>
+                                        </table>
+                                    </div>
+
+                        </div>
+
+                    </div>
+                        
+                   
+            </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Fin Modal Buscar Personal -->
+
+
+<!-- Inicio Modal Buscar Cliente -->
+
+
+<div class="modal fade modalBuscarCliente-modal-lg" id="modalHistorialClientes" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" >
+
+            <div class="modal-header" style="background: #3E59F1; color:white;">
+
+                    <h5 class="modal-title" id="exampleModalLabel">Historial Clientes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span style="color:white;" aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div class="container">
+                    
+                    <div class="row">
+	                    
+	                    <div class="col-12">
+	                    
+	                     	<h6><i class="far fa-hand-pointer"></i> Haga Doble click para seleccionar un elemento</h6>
+	                     	
+	                    </div>
+                   
+                    </div>           
+                        <div class="row">
+                            
+                                <div class="table-responsive pl-2" style="height: 400px;">
+
+                                        <table   id="tblClientes" class="table table-bordered table-hover mt-3">
+        
+                                                <thead style="background: #3E59F1; color:white;">
+                                                    <tr class="text-center">
+                                                        <th scope="col" style="text-justify:auto">ID</th>
+                                                        <th scope="col">Apellidos</th>
+                                                        <th scope="col">Nombre</th>
+                                                    </tr>
+                                                </thead>
+                    
+                                                <tbody>
+                                                </tbody>
+                                        </table>
+                                    </div>
+
+                        </div>
+
+                    </div>
+                        
+                   
+            </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Fin Modal Buscar Cliente -->
+
+<script>
+
+function guardarServicioMecanico(){
+	
+	var Fecha=$('#dtfechaServicioMecanico').val().length;
+	var IDCliente=$('#txtIdCliente').val().length;
+	var IDPersonal=$('#txtIdPersonal').val().length;
+	
+	//Creando Json
+	
+	var ServicioMecanico={
+			serv_id:'',
+			serv_fecha:$('#dtfechaServicioMecanico').val(),
+			per_id:{per_id:$('#txtIdPersonal').val()},
+			cli_id:{cli_id:$('#txtIdCliente').val()},
+	}
+
+	// Creando post
+	if(Fecha>0 && IDCliente>0 && IDPersonal>0)
+		{
+		 $.ajax({
+		        type: 'POST',
+		        url: "Guardar",
+		        data:{
+		        	ServicioMecanico:JSON.stringify(ServicioMecanico)
+		        	},
+		        datatype: 'json',
+		        success: function (response) {
+		        	console.log(response)
+		        	swal({
+	    				  title: "Correcto!",
+	    				  text: "Servicio registrado correctamente!",
+	    				  icon: "success",
+	    				  button: "Aceptar",
+	    				  timer: 2000
+	    				}).then(	
+    						function () {
+    							  if (true) {
+    								 window.location="http://localhost:8080/ServicioMecanico/listar";
+    							  }
+    						}
+						)
+		        	
+		        },
+	            error : function() {
+	                alert("error");
+	            }	 
+		 });
+		 
+		}else{
+			swal({
+				  title: "Error",
+				  text: "Debes completar todos los campos del formulario.",
+				  icon: "error",
+				  button: "Aceptar",
+				});
+		}
+}
+
+//--------------------------------------------------------------------------------
+
+function listarPersonal(){
+	 $.ajax({
+	        type: 'GET',
+	        url: "listarPersonal",
+	        datatype: 'json',
+	        success: function (response) {
+	        	
+	        	$("#tblPersonal tr").remove();
+	        	var obj = response;
+	        	var trHTML = '<thead style="background: #3E59F1;"><tr class="text-center" ><th scope="col" style="text-justify:auto; color:white; ">ID</th>'+
+	       		 '<th style="text-justify:auto; color:white;" scope="col">Apellidos</th>'+
+	       		 '<th style="text-justify:auto; color:white;" scope="col">Cantidad</th> </thead>'+
+	       	 	 '</tr>';
+	             $.each(obj, function (i, obj) {
+	                trHTML += ' <tr style="cursor:pointer;" class="text-center"><td>' + obj.per_id +'</td>'+
+	                '<td>' + obj.apellidos + '</td>'+
+	                '<td>' + obj.nombre + '</td>'
+	             });
+	             $('#tblPersonal').append(trHTML);
+	             
+	        },
+	  });
+	
+}
+
+function listarClientes(){
+	
+	 $.ajax({
+		 
+	        type: 'GET',
+	        url: "listarClientes",
+	        datatype: 'json',
+	        success: function (response) {
+	        	
+	        	$("#tblClientes tr").remove();
+	        	var obj = response;
+	        	var trHTML = '<thead style="background: #3E59F1;"><tr class="text-center" ><th scope="col" style="text-justify:auto; color:white;">ID</th>'+
+	       		 '<th style="text-justify:auto; color:white;" scope="col">Apellidos</th>'+
+	       		 '<th style="text-justify:auto; color:white;" scope="col">Cantidad</th> </thead>'+
+	       	 	 '</tr>';
+	             $.each(obj, function (i, obj) {
+	                trHTML += ' <tr style="cursor:pointer;" class="text-center"><td>' + obj.cli_id +'</td>'+
+	                '<td>' + obj.apellidos + '</td>'+
+	                '<td>' + obj.nombre + '</td>'
+	             });
+	             $('#tblClientes').append(trHTML);
+          
+	        },
+	  });
+}
+
+function agregarDetalleServicio()
+{
+	 $('#ModalRegistrarDetalleServicio').modal('hide');
+	 var idServicio=$('#cmbServicios').val();
+	 var servicio=$("[name='cmbServicio'] option:selected").text();
+	 var marca=$('#txtMarca').val();
+	 var modelo=$('#txtModelo').val();
+	 var placa =$('#txtPlaca').val();
+	 var contenido=$('#txtContenido').val();
+	 var monto='';
+	 var trHTML='';
+	 var fila=0;
+	 var existe=false;
+	 
+	 $.ajax({
+	        type: 'POST',
+	        url: "agregarDetalleServicio",
+	        datatype: 'json',
+	        data:{
+	        	idServicio:idServicio,
+	        	marca:marca,
+	        	modelo:modelo,
+	        	placa:placa,
+	        	contenido:contenido
+	        },
+	        success: function (response) {
+	        	
+	        	monto=response;
+	        	
+	        	if(verificarExistenciaServicioTabla(idServicio))
+        		{
+	        		$('#tblDetallesServicio tr').each(function () {
+	        			
+	        			fila++;
+	        			if(fila>1)
+	        			{
+	        				var id = $(this).find("td").eq(1).html();
+	        				if(id===idServicio && !existe)
+	        				{
+	        					$(this).find("td").eq(2).html(servicio);
+	        					$(this).find("td").eq(3).html(monto);
+	        					$(this).find("td").eq(4).html(marca);
+	        					$(this).find("td").eq(5).html(modelo);
+	        					$(this).find("td").eq(6).html(placa);
+	        					$(this).find("td").eq(7).html(contenido);
+	        					console.log('editado');
+	        					existe=true;
+	        				}
+
+	        			}	
+	        		});
+	        		
+	        		limpiarCampos();
+	        		 
+	        		swal({
+	        			  title: "Informacion",
+	        			  text: "Editado correctamente!",
+	        			  icon: "success",
+	        			  button: "Aceptar",
+	        			  timer: 2000
+	        			})
+	        			
+	        	    
+
+	        				
+        		}else{
+        			
+        			trHTML ='<tr class="text-center"><td hidden="hidden">0</td>'+
+   		       	 '<td hidden="hidden">'+idServicio+'</td>'+
+   		       	 '<td>'+servicio+'</td>'+
+   		       	 '<td>'+monto+'</td>'+
+   		       	 '<td>'+marca+'</td>'+
+   		       	 '<td>'+modelo+'</td>'+
+   		       	 '<td>'+placa+'</td>'+
+   		       	'<td>'+contenido+'</td>'+
+   		       	 '<td><button id='+idServicio+' class="btn btn-warning editar"><i id='+idServicio+'  class="fas fa-pen"></i></button></td></tr>';
+   		       	 $('#tblDetallesServicio').append(trHTML);
+   		      	limpiarCampos();
+   		    
+        		}
+
+	        },
+         error : function() {
+        	 console.log("error");
+         }
+	  });
+	 
+}
+
+function limpiarCampos()
+{
+	 $('#cmbServicios').val('0');
+	 $('#txtMarca').val('');
+	 $('#txtModelo').val('');
+	 $('#txtPlaca').val('');
+	 $('#txtContenido').val('');
+}
+
+function verificarExistenciaServicioTabla(idServicio)
+{
+	var existe=false;
+	var fila=0;
+	
+	$('#tblDetallesServicio tr').each(function () {
+			
+		fila++;
+		if(fila>1)
+		{
+			var id = $(this).find("td").eq(1).html();
+			if(id===idServicio && !existe)
+			{
+				console.log('repetido');
+				existe=true;
+			}
+
+		}	
+	});
+	return existe;
+}
+
+
+$(document).on('click', '.editar', function (event) {
+	
+	  var idServicio = event.target.id;
+	  var fila=0;
+	
+	$('#tblDetallesServicio tr').each(function () {
+		 
+		fila++;
+		if(fila>1)
+			{
+			if(idServicio==$(this).find("td").eq(1).html())
+				{
+				$('#cmbServicios').val($(this).find("td").eq(1).html());
+	   			$('#txtMarca').val($(this).find("td").eq(4).html());
+	   			$('#txtModelo').val($(this).find("td").eq(5).html());
+	   			$('#txtPlaca').val($(this).find("td").eq(6).html());
+	   			$('#txtContenido').val($(this).find("td").eq(7).html());
+				}
+				
+			}	
+		});
+	
+		$("#ModalRegistrarDetalleServicio").modal("show");
+	});
+	
+	
+$(document).on("dblclick","#tblPersonal tr",function() {
+
+	 $('#modalHistorialPersonal').modal('hide');
+	  
+	 $('#txtIdPersonal').val($(this).find('td').eq(0).html());
+     $('#txtNombreCompletoPersonal').val($(this).find('td').eq(1).html()+' '+$(this).find('td').eq(2).html());
+	
+	});
+		
+$(document).on("dblclick","#tblClientes tr",function() {
+
+	 $('#modalHistorialClientes').modal('hide');
+	  
+	 $('#txtIdCliente').val($(this).find('td').eq(0).html());
+     $('#txtNombreCompletoCliente').val($(this).find('td').eq(1).html()+' '+$(this).find('td').eq(2).html());
+	
+	});
+	
+</script>
+
+
+</div>
+
+

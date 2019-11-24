@@ -1,0 +1,120 @@
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns: th = "http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head  id = "tagWithReplaceAttribute"  th:replace = "fragments/header.html :: targetFragmentToIncludeInOurPage" > </head>
+
+<!--  
+<nav th:fragment="menuDeUsuario" id="menuDeUsuario" class="navbar  navbar-inverse navbar-expand-lg navbar-light navbar-principal  sticky-top " style="background: #563D7C; color: #BCADD5;">
+                            
+            <a class="navbar-brand js-scroll-trigger" style="font-size: 25px; color:#FFFFFF;" href="/menu" >Servicio Mecanico</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+             
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                
+              <ul class="navbar-nav ml-auto my-2 my-lg-0">  
+              <span class="mt-2 mr-3" style="color: white;" th:inline="text">Bienvenido: [[${#httpServletRequest.remoteUser}]]</span>         
+               	<li class="nav-item dropdown" >
+			        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" style="color:#FFFFFF;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			          Servicio Mecanico
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			         <a class="dropdown-item" href="/Servicios">Servicios</a>
+			     </li> 
+			     <li class="nav-item dropdown">
+			        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" style="color:#FFFFFF;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			          Mi Cuenta
+			        </a>
+			        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+			          <a class="dropdown-item" href="#">Mi perfil</a>
+			          <form th:action="@{/logout}" method="post">
+			            <input class="dropdown-item" type="submit" value="Cerrar Sesion"/>
+			          </form>
+			     </li>
+              </ul>
+            </div>
+
+        </nav>
+-->
+   <div class="container-scroller">
+      <!-- partial:partials/_navbar.html -->
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          <a class="navbar-brand brand-logo" th:href="@{/Home}">
+            <img src="../images/logo.svg" alt="logo" /> </a>
+          <a class="navbar-brand brand-logo-mini" th:href="@{/Home}">
+            <img src="../images/logo-mini.svg" alt="logo" /> </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <img class="img-xs rounded-circle" src="../img/iconoUsuario.png" alt="Profile image"> </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <img class="img-md rounded-circle" src="../img/iconoUsuario.png" alt="Profile image">
+                  <p  th:text="${nombreCompleto}" class="mb-1 mt-3 font-weight-semibold"></p>
+                  <p  th:text="${email}" class="font-weight-light text-muted mb-0"></p>
+                </div>
+                <a class="dropdown-item" th:href="@{/InformacionCuenta}">Mi Cuenta <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <form th:action="@{/logout}" method="post">
+	            	<input class="dropdown-item" type="submit" value="Cerrar Sesion"/><i class="dropdown-item-icon ti-power-off"></i>
+	          	</form>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <div class="container-fluid page-body-wrapper" style="margin-left: -15px;">
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a th:href="@{/InformacionCuenta}" class="nav-link">
+                <div class="profile-image">
+                  <img class="img-xs rounded-circle" src="../img/iconoUsuario.png" alt="profile image">
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p th:text="${nombreCompleto}" class="profile-name"></p>
+                  <p  th:text="${tipoDeUsuario}" class="designation"></p>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">Menu Principal</li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/Home}">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Inicio</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/ServicioMecanico/listar}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Servicios</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+        <div class="container">
+        <div class="row">
+        <div class="col-12">
+        <div th:replace = "@{'/' + ${template}} :: ${template}">
+        </div>
+        </div>
+        </div>
+		
+
+
+		 
+		
+			
+        <!--Contenido -->
+
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+<div  id = "footer"  th:replace = "fragments/Footer.html :: footer" > </div>
